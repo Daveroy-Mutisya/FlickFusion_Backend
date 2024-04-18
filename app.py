@@ -76,18 +76,7 @@ def get_movies():
 def get_movie(movie_id):
     movie = Movies.query.get(movie_id)
     if movie:
-        movie_data = {
-            "id": movie.id,
-            "title": movie.title,
-            "year": movie.year,
-            "description": movie.description,
-            "rating": movie.rating,
-            "price": movie.price,
-            "poster": movie.poster,
-            "trailer_url": movie.trailer_url,
-            "genre": movie.genre
-        }
-        return jsonify(movie_data)
+        return jsonify(movie.serialize())
     else:
         return jsonify({"error": "Movie not found"}), 404
     
