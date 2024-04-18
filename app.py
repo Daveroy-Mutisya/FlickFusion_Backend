@@ -6,6 +6,7 @@ from models import db, User,Movies,Ontheatre
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import jwt
+from flask import render_template
 
 
 app = Flask(__name__)
@@ -60,8 +61,6 @@ def protected():
         return jsonify({'message': f'Hello, {user.username}'}), 200
     else:
         return jsonify({'message': 'User not found'}), 404
-    
-from flask import render_template
 
 @app.route('/')
 def index():
@@ -77,7 +76,18 @@ def get_movies():
 def get_movie(movie_id):
     movie = Movies.query.get(movie_id)
     if movie:
-        return jsonify(movie.serialize())
+        movie_data = {
+            "id": movie.id,
+            "title": movie.title,
+            "year": movie.year,
+            "description": movie.description,
+            "rating": movie.rating,
+            "price": movie.price,
+            "poster": movie.poster,
+            "trailer_url": movie.trailer_url,
+            "genre": movie.genre
+        }
+        return jsonify(movie_data)
     else:
         return jsonify({"error": "Movie not found"}), 404
     
